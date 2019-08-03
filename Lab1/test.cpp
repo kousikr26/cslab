@@ -3,13 +3,17 @@
 #include <bits/stdc++.h>
 #include <tuple>
 using namespace std;
+
 string add(string a,string b);
 string mul(string a,string b);
 string sub(string a,string b);
 tuple<string,string>  divide(string a, string b);
 bool isPrime(int n);
 string digitmul(string a,char b);
+
+// Karatsuba mltiplication is faster(O(n^1.58)) but works for only certain inputs(number of digits is a power of 2)
 string karatsuba(string a,string b);
+
 int main(){
 	string a,b;
 	cout<<"Enter 2 nums "<<endl;
