@@ -1,0 +1,49 @@
+A left bracket is one of the following characters
+  1. (
+  2. {
+  3. [
+  4. <
+  5. |
+
+A right bracket is one of the following characters
+  1. )
+  2. {
+  3. [
+  4. >
+  5. |
+
+For each left bracket, the corresponding right bracket is the
+bracket of the corresponding number, for example '[' matches ']'.
+
+The sequence of brackets is  balanced if anyof the following conditions are met;
+
+1. The sequence one among  (), {}, [], <> , | |
+2. The sequence consists of two parts A and B where A and B are both balanced .
+3. The sequence  can be written as xAy where x is a left bracket and y is the corresponding right bracket and A is a sequence which is balanced.
+
+Write a C++ program to checj is a sequence of brackets is balanced
+
+Input Output Specification
+
+Input
+1. First line of the input contains a number n indicating the number of test cases
+2. Each of the next n lines contains a sequence of bracket
+
+Output
+ For each sequence print YES if the sequence is balanced and NO otherwise
+
+
+Example
+Input
+
+4
+{}{}|<()>|
+{}{}|<()>|))((
+<<<<||||>>>>
+<<<<||{|}|>>>>
+
+Output
+YES
+NO
+YES
+NO
