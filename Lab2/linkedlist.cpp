@@ -104,6 +104,7 @@ int Del(int xdel,int ydel){
 		prev=traverse;
 		traverse=traverse->next;
 	}
+	cout<<-1<<endl;
 	return -1;
 }
 int Search(double d){
@@ -118,13 +119,13 @@ int Search(double d){
 		
 		if(dist<=d){
 			count++;
-			cout<<"("<<xpoint<<","<<ypoint<<") ";
+			//cout<<"("<<xpoint<<","<<ypoint<<") ";
 		}
 		traverse=traverse->next;
 		
 
 	}
-	cout<<endl;
+	cout<<count<<endl;
 	return count;
 
 
@@ -133,11 +134,15 @@ bool Search(int xsearch,int ysearch){
 	node* traverse=first;
 
 	while(traverse!=NULL){
-		if((traverse->x)==xsearch && (traverse->y)==ysearch) return true;
+		if((traverse->x)==xsearch && (traverse->y)==ysearch){
+			
+			return true;
+		}
 		traverse=traverse->next;
 		
 
 	}
+	
 	return false;
 }
 int Length(){
