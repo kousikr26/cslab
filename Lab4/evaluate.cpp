@@ -1,8 +1,9 @@
 /* INPUT FORMAT
 -NO OF TESTCASES
 -NO OF EXPRESSIONS
--EXPRESSION CONTAINING INTS AND OPERATORS +-*^/
-
+-EXPRESSION CONTAINING INTS AND OPERATORS +-*^/ and UNARY OPERATOR ALSO WORKS
+-WORKS ONLY FOR INTS IF ANY INTERMEDIARY STEP PRODUCES A DECIMAL IT WILL BE FLOORED TO INT
+-EXPONENT SHOULD NOT BE NEGATIVE AS IT WILL PRODUCE NON INT(FRACTION)
 */
 
 
@@ -22,17 +23,17 @@ struct et
 };
 
 
-bool isOperator(char a);
-bool isBracket(char a);
-bool isDigit(char a);
-int isGreater(char a,char b);
-string getString(char x);
-vector <string> findPostfix(string expression);
-et* newNode(string v);
-et* constructTree(vector <string> postfix);
-void printInorder(et *t);
-int solve(et* top);
-
+bool isOperator(char a);//CHECKS IF CHAR IS AN OPERATOR
+bool isBracket(char a);//CHECKS IF CHAR IS A BRACKET
+bool isDigit(char a);//CHECKS IF CHAR IS DIGIT
+int isGreater(char a,char b);//COMPARES PRECEDENCE OF OPERATORS
+string getString(char x);//CONVERTS CHAR TO STRING
+vector <string> findPostfix(string expression);//CONVERTS INFIX TO POSTFIX
+et* newNode(string v);//CREATES NEWNODE IN EXPRESSION TREE
+et* constructTree(vector <string> postfix);//CONSTRUCTS EXPRESSION TREE FROM POSTFIX EXPRESSION IN VECTOR USING A STACK
+void printInorder(et *t);//PRINTS TREE INORDER FOR DEBUGGING PURPOSES
+int solve(et* top);//RECURSIVE FUNCTION TO SOLVE EXPRESSION TREE
+string fixUnary(string a);//APPENDS A BRACKET AND 0 TO A UNARY OPERATOR
 
 
 int main(){
@@ -46,13 +47,15 @@ int main(){
 			string expression;
 			cin>>expression;
 			expression.push_back(')');
-			expression.insert(0,getString('('));
+			expression.insert(0,getString('('));//ENCLOSE EXPRESSION IN BRACKETS FOR EASY POSTFIX EVALUATION
 
-			vector <string> postfix;
+			expression=fixUnary(expression);//HANDLES UNARY OPERATOR BY USING APPENDING ( AND 0
+
+
+			vector <string> postfix;//VECTOR STORING POSTFIX
 			postfix=findPostfix(expression);
 			et* top=constructTree(postfix);
-			//printInorder(top);
-			//cout<<endl;
+
 			cout<<solve(top);
 			cout<<endl;
 		}
@@ -136,9 +139,9 @@ vector <string> findPostfix(string expression){
 	stack <char> s;
 	vector <string> postfix;
 
-	string temp(""); //REmember to clear after pushing
-	bool parsingInteger=false;//remember to reset
-	//cout<<isGreater('+','*')<<endl;
+	string temp(""); 
+	bool parsingInteger=false;
+	
 	for(int i=0;i<expression.length();i++){
 		char curr=expression[i];
 		if(isDigit(curr)){
@@ -146,7 +149,7 @@ vector <string> findPostfix(string expression){
 			parsingInteger=true;
 		}
 		else if(isOperator(curr) || isBracket(curr)){
-			//cout<<"coi"<<curr<<" "<<s.top()<<" "<<endl;
+			
 			if(parsingInteger){
 				postfix.push_back(temp);
 				temp.clear();
@@ -156,12 +159,12 @@ vector <string> findPostfix(string expression){
 			
 			if(curr=='('){
 				s.push(curr);
-				//cout<<"boi"<<curr<<endl;
+				
 			}
 			else if(curr==')'){
 				while(s.top()!='('){
 					postfix.push_back(getString(s.top()));
-					//cout<<"aoi"<<endl;
+					
 					s.pop();
 				}
 				s.pop();//pop the (
@@ -169,13 +172,13 @@ vector <string> findPostfix(string expression){
 			}
 
 			else if(s.empty()||s.top()=='('||(isGreater(curr,s.top())>0)){
-				//cout<<"doi"<<endl;
+				
 				s.push(curr);
 			}
 			else{
-				//cout<<"eoi"<<endl;
+				
 				while(s.top()!='('&&(isGreater(s.top(),curr)>=0)){
-					//cout<<"foi"<<s.top()<<" "<<curr<<endl;
+					
 					postfix.push_back(getString(s.top()));
 					s.pop();
 				}
@@ -188,13 +191,7 @@ vector <string> findPostfix(string expression){
 			cout<<"invalidchar"<<endl;
 		}
 	}
-	/*
-	for(int j=0;j<postfix.size();j++){
-		cout<<postfix[j]<<" ";
-	}
 
-	cout<<endl;
-	*/
 	return postfix;
 }
 bool isOperator(char a){
@@ -236,4 +233,30 @@ string getString(char x)
     string s(1, x); 
   
     return s;    
+}
+string fixUnary(string a){
+	char prev;
+	char curr;
+	int index;
+	bool present;
+	do{
+		present=false;
+		for(int i=1;i<a.length();i++){
+			curr=a[i];
+			prev=a[i-1];
+			if(curr=='-'&&(prev=='(' || isOperator(prev))){
+				present=true;
+				index=i;
+				while(isDigit(a[++i]));
+
+
+				a.insert(index,getString('('));
+				a.insert(index+1,getString('0'));
+				a.insert(i+2,getString(')'));
+				break;
+			}
+		}
+	}
+	while(present);
+	return a;
 }
