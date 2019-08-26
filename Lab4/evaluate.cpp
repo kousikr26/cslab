@@ -1,19 +1,16 @@
 /* INPUT FORMAT
 -NO OF TESTCASES
 -NO OF EXPRESSIONS
--EXPRESSION CONTAINING INTS AND OPERATORS +-*^/ and UNARY OPERATOR ALSO WORKS
+-EXPRESSION SHOULD CONTAIN INTS AND OPERATORS +-*^/ UNARY OPERATOR AND VARIABLES 
 -WORKS ONLY FOR INTS IF ANY INTERMEDIARY STEP PRODUCES A DECIMAL IT WILL BE FLOORED TO INT
 -EXPONENT SHOULD NOT BE NEGATIVE AS IT WILL PRODUCE NON INT(FRACTION)
 */
 
 
 
-#include <iostream>
-#include<string>
-#include <stack>
-#include <vector>
+
 #include <bits/stdc++.h> 
-#include <map>
+
 using namespace std;
 
 
@@ -35,26 +32,34 @@ et* constructTree(vector <string> postfix);//CONSTRUCTS EXPRESSION TREE FROM POS
 void printInorder(et *t);//PRINTS TREE INORDER FOR DEBUGGING PURPOSES
 int solve(et* top);//RECURSIVE FUNCTION TO SOLVE EXPRESSION TREE
 string fixUnary(string a);//APPENDS A BRACKET AND 0 TO A UNARY OPERATOR
-int evaluate(string expression);
-
+int isAssignment(string expression);//CHECKS IF EXPRESSION IS AN ASSIGNMENT STATEMENT
+int evaluate(string expression);//EVALIUATES AN EXPRESSION CONTAINING NUMBERS
+void assign(string expression,vector<string>& varnames,vector<string>& varvalues);//ASSIGNS A VARIABLE A VALUE FROM EXPRESSION
+string substitute(string expression,vector<string>& varnames,vector<string>& varvalues);//SUBSTITUTES VALUES OF VARIABLES FROM MAP
+void replaceAll( string &s, const string &search, const string &replace);//REPLACES ALL OCCURENCES OF SUBSTRING
+bool invalidVariables(string expression);//CHECKS IF A STRING CONTAINS UNSUBSTITUTED VARIABLES
+void updateVector(string key,string value,vector<string>& varnames,vector<string>& varvalues);
 int main(){
 	int testcases;
 	cin>>testcases;
 	for(int testcase=0;testcase<testcases;testcase++){
 		int noexp;
 		cin>>noexp;
-		map<string,string> variables;
+		
+		vector<string> varnames;
+		vector<string> varvalues;
 		for(int exp=0;exp<noexp;exp++){
 		
 			string expression;
 			cin>>expression;
-			if(isAssignment(expression)){
-				variables=assign(variables);//check if RHS variables are assigned ellse print invalid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			if(isAssignment(expression)!=-1){
+				assign(expression,varnames,varvalues);
 			}
 			else{
-				expression=substitute(expression,variables);
-				cout<<evaluate(expression);//IF INVALID EXP DO NOT RUN tHIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! make if null 
-				cout<<endl;
+				expression=substitute(expression,varnames,varvalues);
+				if(invalidVariables(expression)) cout<<"CANT BE EVALUATED"<<endl;
+				else cout<<evaluate(expression)<<endl;
+				
 			}
 		}
 	}
@@ -74,6 +79,40 @@ int evaluate(string expression){
 	return solve(top);
 }
 
+void assign(string expression,vector<string>& varnames,vector<string>& varvalues){
+	int equalPos=isAssignment(expression);
+	string finalexp;
+	string substitutedString=substitute(expression.substr(equalPos+1),varnames,varvalues);
+	if(invalidVariables(substitutedString)) cout<<"CANT BE EVALUATED"<<endl;
+	else{
+		finalexp=expression.substr(0,equalPos+1).append(to_string(evaluate(substitutedString)));
+		equalPos=isAssignment(expression);
+		
+		updateVector(finalexp.substr(0,equalPos),finalexp.substr(equalPos+1),varnames,varvalues);
+	}
+	return ;
+	
+
+}
+void updateVector(string key,string value,vector<string>& varnames,vector<string>& varvalues){
+	for (int i=0;i<varnames.size();i++) { 
+		if(varnames[i]==key){
+			varvalues[i]=value;
+			return;
+		}
+    }
+    varnames.push_back(key);
+    varvalues.push_back(value);
+    return ; 
+}
+string substitute(string expression,vector<string>& varnames,vector<string>& varvalues){
+	
+    for (int i=0;i<varnames.size();i++) { 
+		replaceAll(expression,varnames[i],varvalues[i]);
+    } 
+    return expression;
+
+}
 et* newNode(string v) { 
     et *temp = new et; 
     temp->left = NULL;
@@ -269,9 +308,25 @@ string fixUnary(string a){
 	while(present);
 	return a;
 }
-bool isAssignment(expression){
+int isAssignment(string expression){
 	for(int i=0;i<expression.length();i++){
-		if(expression[i]=='=') return true;
+		if(expression[i]=='=') return i;
+	}
+	return -1;
+}
+void replaceAll( string &s, const string &search, const string &replace ) {
+    for( size_t pos = 0; ; pos += replace.length() ) {
+        // Locate the substring to replace
+        pos = s.find( search, pos );
+        if( pos == string::npos ) break;
+        // Replace by erasing and inserting
+        s.erase( pos, search.length() );
+        s.insert( pos, replace );
+    }
+}
+bool invalidVariables(string expression){
+	for(int i=0;i<expression.length();i++){
+		if(isalpha(expression[i])) return true;
 	}
 	return false;
 }

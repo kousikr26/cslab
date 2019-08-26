@@ -23,6 +23,7 @@ bool checkBraces(string expression){
 	int pipe=0;
 	stack <char> braces;
 	for(int i=0;i<n;i++){
+		//case if pipe character is encountered
 		if(expression[i]=='|' && pipe==0){
 			braces.push('|');
 			pipe=1;
@@ -30,7 +31,8 @@ bool checkBraces(string expression){
 		}
 		else if(expression[i]=='|' && pipe==1){
 			if(braces.empty()) return false;
-			peekedchar=braces.top();//stack may be emptry
+			
+			peekedchar=braces.top();
 			
 			if(checkMatch(peekedchar,expression[i])){
 				
@@ -40,22 +42,25 @@ bool checkBraces(string expression){
 			}
 			else return false;
 		}
+
+
+
+
+		//case if character is not pipe
 		else{
 			if(isOpen(expression[i])){
 				braces.push(expression[i]);
 			}
 			else{
 				if(braces.empty()) return false;
-				peekedchar=braces.top();//stack may be emptry
-				if(checkMatch(peekedchar,expression[i])){
-					
-					braces.pop();
+				peekedchar=braces.top();
 
-				}
-				else{
+
+				if(checkMatch(peekedchar,expression[i])) braces.pop();
+				else return false;
 					
-					return false;
-				}
+					
+				
 			}
 		}
 	}
