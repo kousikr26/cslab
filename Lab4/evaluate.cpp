@@ -13,6 +13,7 @@
 #include <stack>
 #include <vector>
 #include <bits/stdc++.h> 
+#include <map>
 using namespace std;
 
 
@@ -34,7 +35,7 @@ et* constructTree(vector <string> postfix);//CONSTRUCTS EXPRESSION TREE FROM POS
 void printInorder(et *t);//PRINTS TREE INORDER FOR DEBUGGING PURPOSES
 int solve(et* top);//RECURSIVE FUNCTION TO SOLVE EXPRESSION TREE
 string fixUnary(string a);//APPENDS A BRACKET AND 0 TO A UNARY OPERATOR
-
+int evaluate(string expression);
 
 int main(){
 	int testcases;
@@ -42,28 +43,36 @@ int main(){
 	for(int testcase=0;testcase<testcases;testcase++){
 		int noexp;
 		cin>>noexp;
+		map<string,string> variables;
 		for(int exp=0;exp<noexp;exp++){
 		
 			string expression;
 			cin>>expression;
-			expression.push_back(')');
-			expression.insert(0,getString('('));//ENCLOSE EXPRESSION IN BRACKETS FOR EASY POSTFIX EVALUATION
-
-			expression=fixUnary(expression);//HANDLES UNARY OPERATOR BY USING APPENDING ( AND 0
-
-
-			vector <string> postfix;//VECTOR STORING POSTFIX
-			postfix=findPostfix(expression);
-			et* top=constructTree(postfix);
-
-			cout<<solve(top);
-			cout<<endl;
+			if(isAssignment(expression)){
+				variables=assign(variables);//check if RHS variables are assigned ellse print invalid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			}
+			else{
+				expression=substitute(expression,variables);
+				cout<<evaluate(expression);//IF INVALID EXP DO NOT RUN tHIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! make if null 
+				cout<<endl;
+			}
 		}
 	}
 	return 0;
 
 }
+int evaluate(string expression){
+	expression.push_back(')');
+	expression.insert(0,getString('('));//ENCLOSE EXPRESSION IN BRACKETS FOR EASY POSTFIX EVALUATION
 
+	expression=fixUnary(expression);//HANDLES UNARY OPERATOR BY USING APPENDING ( AND 0
+
+
+	vector <string> postfix;//VECTOR STORING POSTFIX
+	postfix=findPostfix(expression);
+	et* top=constructTree(postfix);
+	return solve(top);
+}
 
 et* newNode(string v) { 
     et *temp = new et; 
@@ -259,4 +268,10 @@ string fixUnary(string a){
 	}
 	while(present);
 	return a;
+}
+bool isAssignment(expression){
+	for(int i=0;i<expression.length();i++){
+		if(expression[i]=='=') return true;
+	}
+	return false;
 }
