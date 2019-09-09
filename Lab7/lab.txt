@@ -1,0 +1,28 @@
+Write a program to generate the largest number possible by concatenation from a collection of integers.
+
+Input Specification
+1) The first line of input is a number indicating the number of test cases
+2) Every test case will begin with a number 't' indicating the number of numbers in the sequence
+3) The next 't' lines will be the numbers in the sequence, one on each line.
+
+Output
+For each test case, A single line displaying the largest possible number from the collection of numbers
+
+
+Example
+2
+5
+10
+65
+88
+77
+32
+5
+1111111111111
+9
+91
+73
+979
+Output
+8877653210
+997991731111111111111
