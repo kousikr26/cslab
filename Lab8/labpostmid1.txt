@@ -1,0 +1,9 @@
+Design an algorithm to find the smallest circle centred at origin and encloses half of a given set of points.
+
+Input Output specification
+The first line of the input is the number of test cases.
+The first line of every test case indicates the number of points in the input.
+If the first line of the test case is k, the next k lines contains a pair of integers signifying the x and y coordinates of the input.
+
+Output
+For each test case, there should be one number as output signifying the radius of the smallest circle centered at origin and encloses half of the given points.
