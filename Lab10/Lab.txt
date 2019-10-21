@@ -1,0 +1,26 @@
+You are given a m by n board where cells are colored with white and black colors.
+Find the size largest connected black block. Note that in a 2 by 2 board in which the  diagonal cells colored black, the largest block with be of size 1.  The block need not have any regular shape.
+Input Output specification
+
+1. First line contains two integers specifying m and n.
+2. The next line contains a number k denoting the number of black points.
+3. The next k lines gives the coordinates of the black points.
+
+Output
+
+A single line denoting the size of the largest connected block
+
+
+Extra Credits
+
+Solve the problem with multiple colors where you are required to find the largest monochromatic block.
+
+Input Output Specification
+
+1. First line contains 3 numbers specifying the board size m , n and the number of colors used c.
+2. The next mn lines contain a single integer describing the color of the cells in a row wise manner. Each color is an integer less than c.
+
+Output
+
+A single line denoting the size and color  of the largest connected block
+
