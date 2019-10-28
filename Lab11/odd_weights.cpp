@@ -49,20 +49,33 @@ int colorGraph(vector<vector<int>> graph, set<int> &vertices,int start, int n){
 
 
 int main(){
-	int n,m,a,b;
+	int n,m,a,b,weight;
 	cin>>n>>m;
 	vector<vector<int>> graph;
 	set<int> vertices; 
-	graph.resize(n+1, vector<int>(0));
+	graph.resize(2*(n+1), vector<int>(0));
+	int count=1;
 	for(int i=0;i<m;i++){
-		cin>>a>>b;
+		cin>>a>>b>>weight;
 		a++;
 		b++;//Starting from zero
-		
-		graph[a].push_back(b);
-		graph[b].push_back(a);
-		vertices.insert(a);
-		vertices.insert(b);
+		if(weight%2==0){
+			graph[n+count].push_back(a);
+			graph[n+count].push_back(b);
+			graph[a].push_back(n+count);
+			graph[b].push_back(n+count);
+			vertices.insert(a);
+			vertices.insert(b);
+			vertices.insert(n+count);
+			
+			count++;
+		}
+		else{
+			graph[a].push_back(b);
+			graph[b].push_back(a);
+			vertices.insert(a);
+			vertices.insert(b);
+		}
 
 	}
 	// for(int i=1;i<=3;i++){
@@ -72,11 +85,11 @@ int main(){
 	int check=1;
 	while(vertices.size()!=0){
 		if(colorGraph(graph,vertices,*vertices.begin(),n)==0){
-			cout<<"NO"<<endl;
+			cout<<"YES"<<endl;
 			check=0;
 			break;
 		}
 	}
-	if(check==1) cout<<"YES"<<endl;
+	if(check==1) cout<<"NO"<<endl;
 
 }
