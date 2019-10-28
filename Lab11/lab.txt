@@ -1,0 +1,19 @@
+Q1. Design an algorithm to check if a given graph is bipartite
+Q2. Design an algorithm to check if a given weighted graph (weights are integers) has a cycle of odd weight.
+
+Input Output Specification
+Q1.
+Input
+The first line of the algorithm contains two numbers n and m indicating the number of vertices and the number of edges respectively.
+The each  next m lines contains a pair of number indicating an edge.
+Output
+YES if the graph is bipartite
+NO otherwise
+
+Q2.
+Input
+The first line of the algorithm contains two numbers n and m indicating the number of vertices and the number of edges respectively.
+The each  next m lines contains three  numbesr indicating an edge and its weight. The last integer denotes the weight
+Output
+YES if the graph  has a cycle of odd weight.
+NO otherwise.
