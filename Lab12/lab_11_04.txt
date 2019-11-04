@@ -1,0 +1,7 @@
+Let G be a weighted graph. You need to find a connected cycle free subgraph of H of maximum cost.
+The cost of a subgraph is defined as the product of the weights of the edges present.
+
+Input Output Specification
+The first line of the input contains numbers n and m denoting the number of vertices and  edges in the graph.
+The next m lines contain 3 numbers i,j and k indicating that the edge (i, j) is present and is of weight k.
+The numbers i and j will be from 1 to n. The number k is a positive real number. You may assume that k and 1/k are less than 1 billion.

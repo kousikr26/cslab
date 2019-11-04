@@ -15,7 +15,7 @@ void insert(int key){
 		hashedvals[hash_key][0]=key;
 	}
 	else{
-		cout<<"push "<<key<<endl;
+		
 		hashedvals[hash_key].push_back(key);
 	}
 
@@ -23,11 +23,11 @@ void insert(int key){
 bool search(int key){
 	int hash_key=hash_fun(key);
 	if(hashedvals[hash_key].size()==1 && hashedvals[hash_key][0]==INF) return false;
-	cout<<"search "<<hashedvals[hash_key].size()<<" "<<key<<endl;
+	
 	for(int i=0;i<hashedvals[hash_key].size();i++){
-		cout<<"yo";
+		
 		if(hashedvals[hash_key][i]==key){
-			cout<<"found";
+			
 			return true;
 		}
 	
@@ -37,7 +37,7 @@ bool search(int key){
 bool delete_key(int key){
 	if(!search(key)) return false;
 	int hash_key=hash_fun(key);
-	cout<<"boo";
+	
 	vector<int>::iterator it;
 	for (auto it = hashedvals[hash_key].begin(); it != hashedvals[hash_key].end(); ++it) {
 		if(*it==key) break;
@@ -53,7 +53,7 @@ int main(){
 	insert(9023);
 	insert(4000);
 	insert(1000);
-	cout<<"bal "<<hashedvals[0][1]<<hashedvals[0][2]<<endl;
+	
 	cout<<search(4000);
 	cout<<delete_key(4000);
 	return 0;
