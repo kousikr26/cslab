@@ -2,43 +2,43 @@
 using namespace std;
 #define lli long long
 #define fori(n) for(lli i=0;i<n;i++)
-bool binarySearch(vector<string> arr,int l, int r,string x) 
-{ 
-    if (r >= l) { 
-        int mid = l + (r - l) / 2; 
+const int p=53;
+const int m=1e7+19;
 
-        if (arr[mid] == x) 
-            return true; 
-
-        if (arr[mid] > x) 
-            return binarySearch(arr, l, mid - 1, x); 
-  
-
-        return binarySearch(arr, mid + 1, r, x); 
-    } 
-  
-    return false; 
+lli hash_func(string const& s) {
+    
+    
+    long long hash_value = 0;
+    long long p_pow = 1;
+    for (char c : s) {
+        hash_value = (hash_value + (c - 'A' + 1) * p_pow) % m;
+        p_pow = (p_pow * p) % m;
+    }
+    return hash_value;
 }
-
 int main(){
 	int n;
 	cin>>n;
 	vector<string> inps;
+	
+	vector<vector<string>> hashTable(m);
+
+
 	string temp,revstr;
+	
+
 	for(int i=0;i<n;i++){
 		cin>>temp;
 		revstr=temp;
 		reverse(revstr.begin(),revstr.end());
 		
 		if(temp!=revstr){
+			hashTable[hash_func(temp)].push_back(temp);
 			inps.push_back(temp);
-			
 		}
+
 			
 	}
-	sort(inps.begin(),inps.end());
-	
-	cout<<endl;	
 	bool con=false;
 	for(int i=0;i<inps.size();i++){
 		temp=inps[i];
@@ -46,13 +46,19 @@ int main(){
 		reverse(revstr.begin(),revstr.end());
 		
 
-		if(binarySearch(inps,0,inps.size()-1,temp)){
-			if(binarySearch(inps,0,inps.size()-1,revstr)){con=true;break;}
-			
+		if(hashTable[hash_func(revstr)].size()!=0){
+			for(int i=0;i<hashTable[hash_func(revstr)].size();i++){
+				if(hashTable[hash_func(revstr)][i]==revstr){
+					con=true;
+					break;
+				}
+			}
+
 		}
 
+
 	}
+
 	if(con) cout<<"YES"<<endl;
 	else cout<<"NO"<<endl;
-
 }
