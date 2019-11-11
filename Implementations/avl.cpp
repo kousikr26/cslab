@@ -128,7 +128,7 @@ int main(){
 	cout<<endl;
 	cout<<search(root,102)<<search(root,234)<<search(root,69);
 	cout<<endl;
-	cout<<delete_node(root,102)<<delete_node(root,234)<<delete_node(root,69);
+	//cout<<delete_node(root,102)<<delete_node(root,234)<<delete_node(root,69);
 	cout<<endl;
 	inorder(root);
 }
