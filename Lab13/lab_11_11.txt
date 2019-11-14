@@ -1,0 +1,9 @@
+You are given a sequence of words over a-zA-Z. Write a program to check if a non palindromic word and its reverse word are both present.
+
+Input Specification
+1. An integer n denoting the number of words
+2. The next n lines contains n words. You may assume that each word is of length at most 100.
+
+Output
+YES if there are two words in the  sequences which are reverses of each other
+NO otherwise
